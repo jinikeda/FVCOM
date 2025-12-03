@@ -36,7 +36,6 @@ Required/Optional libraries
 
 
 ## Installation
-on a src folder
 *	make depend<br>
 Generate the module dependencies of FVCOM codes. This step is required only when there are new codes added.
 *	edit make.inc<br>

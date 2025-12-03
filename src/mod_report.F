@@ -54,7 +54,7 @@ MODULE MOD_REPORT
     !==============================================================================|
     USE ALL_VARS
     USE MOD_WD
-    USE MOD_ICE
+!   USE MOD_ICE
 # if defined (WAVE_CURRENT_INTERACTION)
     USE VARS_WAVE, only : HSC1
 #  endif

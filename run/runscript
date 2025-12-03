@@ -1,0 +1,68 @@
+#!/bin/sh
+### WRITE NOTHING ABOVE THIS LINE: PBS MUST COME FIRST!
+### Standard14 and Standard19
+### Updated on 2020-10-30
+###=====================================================#
+###=====================================================#
+###  This runscript is for jobs running under MPI       
+###  consuming all processes on each node requested
+###  Edit the following
+###    1.) username
+###    2.) job name
+###    3.) logfile
+###    4.) error file
+###    5.) Resource resquest (do not change ppn or nodes)
+###    6.) standard14 or standard19
+###    7.) Run command 
+###=====================================================#
+###
+###=====================================================#
+### Set the username     [Example: #PBS -u qxu ]
+#PBS -u jqi
+###=====================================================#
+### Set job name         [Example: #PBS -N gom3 ]
+#PBS -N test
+###=====================================================#
+### Set output file name [Example: #PBS -o fvcom.log ]
+###                                #PBS -e fvcom.err
+#PBS -e test.err 
+#PBS -o test.out 
+###=====================================================#
+###PBS -l nodes=12:ppn=8:nehalem
+###PBS -l nodes=2:ppn=8:nehalem
+###PBS -l nodes=12:ppn=8:quadcore
+###PBS -l nodes=8:ppn=12:sixcore 
+###PBS -l nodes=4:ppn=12:x5670
+###PBS -l nodes=2:ppn=24:twelvecore
+###PBS -l nodes=2:ppn=32:microway
+#PBS -l nodes=1:ppn=20:microway
+
+###=====================================================#
+### Set job walltime
+#PBS -l walltime=48:00:00
+###=====================================================#
+### Declare job non-rerunable
+#PBS -r n
+###=====================================================#
+
+###=====================================================#
+# This job's working directory
+echo Working directory is $PBS_O_WORKDIR
+
+### MAKE SURE THE PATH DOES NOT INCLUDE '/hosts/hydra/'
+echo Modified Working dir is: `echo $PBS_O_WORKDIR | sed 's_/hosts/hydra/_/_'`
+cd `echo $PBS_O_WORKDIR | sed 's_/hosts/hydra/_/_'`
+###=====================================================#
+CPUS=`cat $PBS_NODEFILE | wc -l`
+
+echo NodeFile is: $PBS_NODEFILE , Nodes selected:
+cat $PBS_NODEFILE | sort | uniq
+
+eval `modulecmd bash purge`
+eval `modulecmd bash load standard19`
+
+echo I am launching from master node `cat /etc/hostname`
+
+mpiexec -f $PBS_NODEFILE -np $CPUS  ./fvcom --casename=tst
+
+echo Tada! `date`

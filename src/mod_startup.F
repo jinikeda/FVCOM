@@ -37,8 +37,8 @@ MODULE MOD_STARTUP
 
 
 #  if defined (ICE)
-  USE MOD_ICE
-  USE MOD_ICE2D
+!  USE MOD_ICE
+!  USE MOD_ICE2D
 #  endif
 
 # if defined (WATER_QUALITY)

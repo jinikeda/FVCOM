@@ -479,7 +479,7 @@ PROGRAM FVCOM
 # endif
 
 # if defined (ICE)
-  USE MOD_ICE
+!  USE MOD_ICE
 # endif
 
 ! Added by researchers at Akvaplan-niva 2018, idealized tests give promising results.
@@ -853,20 +853,20 @@ PROGRAM FVCOM
      !  PREPARE TO START FVCOM'S MAIN LOOP                                          !
      !==============================================================================!
      if(DBG_SET(dbg_log)) THEN
-        write(IPT,*) "!===================================================="
-        write(IPT,*) "!===================================================="
-        write(IPT,*) "!============== STARTING MAIN LOOP AT:==============="
+!        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!============== STARTING MAIN LOOP AT:==============="
         if(DBG_SET(dbg_log)) &
              & Call REPORT_TIME(IINT,ISTART,IEND,IntTime)
-        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!===================================================="
      end if
 
      CALL REPORT('INITIAL CONDITIONS')
 
      if(DBG_SET(dbg_log)) THEN
-        write(IPT,*) "!===================================================="
-        write(IPT,*) "!===================================================="
-        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!===================================================="
+!        write(IPT,*) "!===================================================="
      end if
 
      !////////////////////////// MAIN LOOP //////////////////////////////////////////
@@ -972,7 +972,7 @@ PROGRAM FVCOM
      if(DBG_SET(dbg_log)) THEN
         write(IPT,*) "===================================================="
         write(IPT,*) "===================================================="
-        write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
+        ! write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
         Call REPORT_TIME(INT_COUNT,INT_START,INT_END,IntTime)
         write(IPT,*) "===================================================="
      end if
@@ -1200,7 +1200,7 @@ PROGRAM FVCOM
 !     if(DBG_SET(dbg_log)) THEN
 !        write(IPT,*) "===================================================="
 !        write(IPT,*) "===================================================="
-!        write(IPT,*) "======STARTING MAIN LOOP OIASSIMILATION MODE:======="
+!        ! write(IPT,*) "======STARTING MAIN LOOP OIASSIMILATION MODE:======="
 !        Call REPORT_TIME(IINT,INT_START,INT_END,IntTime)
 !        write(IPT,*) "===================================================="
 !     end if
@@ -1453,7 +1453,7 @@ PROGRAM FVCOM
    if(DBG_SET(dbg_log)) THEN
       write(IPT,*) "===================================================="
       write(IPT,*) "===================================================="
-      write(IPT,*) "============== STARTING MAIN LOOP AT:==============="
+      ! write(IPT,*) "============== STARTING MAIN LOOP AT:==============="
       if(DBG_SET(dbg_log)) &
            & Call REPORT_TIME(IINT,ISTART,IEND,IntTime)
       write(IPT,*) "===================================================="
@@ -1617,7 +1617,7 @@ PROGRAM FVCOM
      if(DBG_SET(dbg_log)) THEN
         write(IPT,*) "===================================================="
         write(IPT,*) "===================================================="
-        write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
+        ! write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
         Call REPORT_TIME(INT_COUNT,INT_START,INT_END,IntTime)
         write(IPT,*) "===================================================="
      end if
@@ -1789,7 +1789,7 @@ PROGRAM FVCOM
    if(DBG_SET(dbg_log)) THEN
       write(IPT,*) "===================================================="
       write(IPT,*) "===================================================="
-      write(IPT,*) "============== STARTING MAIN LOOP AT:==============="
+      ! write(IPT,*) "============== STARTING MAIN LOOP AT:==============="
       if(DBG_SET(dbg_log)) &
            & Call REPORT_TIME(IINT,ISTART,IEND,IntTime)
       write(IPT,*) "===================================================="
@@ -1825,7 +1825,7 @@ PROGRAM FVCOM
      if(DBG_SET(dbg_log)) THEN
         write(IPT,*) "===================================================="
         write(IPT,*) "===================================================="
-        write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
+        ! write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
         Call REPORT_TIME(INT_COUNT,INT_START,INT_END,IntTime)
         write(IPT,*) "===================================================="
      end if
@@ -2267,7 +2267,7 @@ IF (ENKF_memberCONTR ==1 ) THEN
      if(DBG_SET(dbg_log)) THEN
         write(IPT,*) "===================================================="
         write(IPT,*) "===================================================="
-        write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
+        !write(IPT,*) "======STARTING MAIN LOOP ASSIMILATION MODE:========="
         Call REPORT_TIME(INT_COUNT,INT_START,INT_END,IntTime)
         write(IPT,*) "===================================================="
      end if
@@ -2488,8 +2488,8 @@ IF (ENKF_memberCONTR ==1 ) THEN
 #  endif
 
   
-  if(DBG_SET(dbg_log)) write(IPT,*)"TADA!"
-  CALL PSHUTDOWN
+!  if(DBG_SET(dbg_log)) write(IPT,*)"TADA!"
+CALL PSHUTDOWN
 
 END PROGRAM FVCOM
 
