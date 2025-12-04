@@ -58,29 +58,38 @@
 
 MODS  = mod_prec.F      sinter.F        mod_types.F     mod_time.F      \
         swmod1.F       mod_main.F      mod_spherical.F mod_utils.F     \
-        mod_clock.F     eqs_of_state.F  mod_interp.F    mod_par.F       \
-        mod_par_special.F               mod_ncll.F      mod_nctools.F   \
-        mod_wd.F        mod_sng.F       mod_heatflux.F  mod_solar.F     \
-        mod_bulk.F      mod_input.F     mod_force.F     mod_obcs.F      \
-        mod_petsc.F     mod_semi_implicit.F             mod_non_hydro.F \
-        mod_set_time.F  mod_startup.F   mod_wqm.F       mod_ncdio.F     \
-        mod_setup.F     mod_newinp.F    particle.F      linklist.F      \
-        mod_lag.F       mod_northpole.F mod_pwp.F       mod_dye.F       \
-        mod_optimal_interpolation.F     mod_report.F    mod_probe.F     \
-        mod_gotm.F      mod_balance_2d.F mod_tridiag.F  mod_scal.F      \
-        mod_meanflow.F  mod_obcs2.F     mod_obcs3.F     mod_sed.F       \
-        mod_enkf.F      mod_etkf.F      mod_rrk.F       mod_rrkf_obs.F  \
-        mod_rrkassim.F  mod_enkf_ncd.F  enkf_ncdio.F    mod_enkf_obs.F  \
-        mod_enkfassim.F mod_assim.F     mod_nesting.F   mod_visit.F     \
-        mod_plbc.F      mod_dam.F       mod_station_timeseries.F        \
-        mod_sparse_timeseries.F         mod_boundschk.F mod_esmf_nesting.F \
-        mod_cstms_vars.F mod_flocmod.F  mod_sed_cstms.F mod_fluid_mud.F \
-        mod_tvd.F       mod_mld_rho.F   mod_vegetation.F                \
+        mod_clock.F    eqs_of_state.F  mod_interp.F    mod_par.F       \
+        mod_par_special.F              mod_ncll.F      mod_nctools.F   \
+        mod_wd.F       mod_sng.F       mod_heatflux.F  mod_solar.F     \
+        mod_bulk.F     mod_input.F     mod_force.F     mod_obcs.F      \
+        mod_petsc.F    mod_semi_implicit.F             mod_non_hydro.F \
+        mod_set_time.F mod_startup.F   mod_wqm.F       mod_ncdio.F     \
+        mod_setup.F    mod_newinp.F    particle.F      linklist.F      \
+        mod_lag.F      mod_northpole.F mod_pwp.F       mod_dye.F       \
+        mod_optimal_interpolation.F    mod_report.F    mod_probe.F     \
+        mod_gotm.F     mod_balance_2d.F mod_tridiag.F  mod_scal.F      \
+        mod_meanflow.F mod_obcs2.F     mod_obcs3.F     mod_sed.F       \
+        mod_enkf.F     mod_etkf.F      mod_rrk.F       mod_rrkf_obs.F  \
+        mod_rrkassim.F mod_enkf_ncd.F  enkf_ncdio.F    mod_enkf_obs.F  \
+        mod_enkfassim.F mod_assim.F    mod_nesting.F   mod_visit.F     \
+        mod_plbc.F     mod_dam.F       mod_station_timeseries.F        \
+        mod_sparse_timeseries.F        mod_boundschk.F mod_esmf_nesting.F \
+        mod_cstms_vars.F mod_flocmod.F mod_sed_cstms.F mod_fluid_mud.F \
+        mod_tvd.F      mod_mld_rho.F   mod_vegetation.F                \
         mod_heatflux_sediment.F mod_vector_projection.F \
-        stubs_icing_upcase.F stubs_wavecomm.F
+        ice_kinds_mod.F  ice_model_size.F ice_calendar.F  ice_grid.F \
+        ice_init.F \
+        ice_fileunits.F  ice_albedo.F    ice_work.F      ice_scaling.F \
+        ice_flux.F       ice_mechred.F   ice_itd.F       ice_itd_linear.F \
+        ice_therm_vertical.F ice_therm_itd.F ice_state.F \
+        ice_ocean.F      ice_atmo.F      ice_flux_in.F   ice_constants.F \
+        ice_domain.F     ice_coupling.F  icing.F \
+        mod_ice.F        mod_ice2d.F
 
 # lwang added mod_mld_rho.F
-MODS_W =
+MODS_W = mod_main_wave.F  swmod2.F  swmod3.F \
+         mod_action_im.F  mod_action_ex.F  mod_wavesetup.F \
+         mod_wave_current_interaction.F  mod_bbl.F
 
 MAIN  = fvcom.F         genmap.F        tge.F           longshore_flow.F\
         cell_area.F     open_all.F      load_grid.F     allocate_all.F  \
@@ -101,17 +110,16 @@ MAIN  = fvcom.F         genmap.F        tge.F           longshore_flow.F\
         calc_vort.F     namelist.F      nh_set_nesting.F                \
         coare26z.F      coare40vn.F     adv_uv_edge_gcn_rk.F            \
         adv_uv_edge_gcy_rk.F            adv_t_rk.F      adv_s_rk.F      \
-        adv_q_rk.F
+        adv_q_rk.F ice_init_0.F
 
-FLAG_411 = 1
+MAIN_W = ocpmix.F  ocpcre.F  ocpids.F \
+         swanpre1.F  swanpre2.F  swanser.F  swanmain.F \
+         swancom1.F  swancom2.F  swancom3.F  swancom4.F \
+         swancom5.F  w3part.F
 
-MAIN_W =
 
-ifdef FLAG_411
-  COBJS = func_pointer.c partition.c
-else
-  COBJS = func_pointer.c
-endif
+# COBJS = $(if $(FLAG_411), func_pointer.c partition.c, func_pointer.c)
+COBJS = func_pointer.c partition.c
 
 BIOGEN	= mod_bio_3D.F	mod_onedtide.F
 
@@ -120,15 +128,55 @@ SRCS = $(MODS) $(MODS_W) $(MAIN) $(BIOGEN) $(MAIN_W)
 # object list is composed of free (*.F) and fixed (*.F90) source
 FVCOM_OBJS = $(COBJS:.c=.o) $(SRCS:.F=.o) $(FIXED:.F90=.o)
 
-# Explicit module dependencies to ensure correct build order
 mod_setup.o: mod_setup.F
 mod_nesting.o: mod_setup.o
 particle.o: mod_par.o
 mod_nctools.o: mod_par.o
-mod_utils.o: ocpcomm4.o
+
+# Wave-related dependencies
+swanser.o: w3part.o
+mod_bulk.o: mod_main_wave.o
+mod_main_wave.o: mod_obcs.o
+mod_wave_current_interaction.o: mod_main_wave.o mod_wd.o mod_station_timeseries.o mod_sparse_timeseries.o
+mod_set_time.o: mod_main_wave.o
+
+# Startup / M_GENARR module
+mod_startup.o: swmod2.o ice_state.o
+
+# Ice-related dependencies
+ice_domain.o:        ice_kinds_mod.o ice_model_size.o
+ice_constants.o:     ice_domain.o
+ice_fileunits.o:     ice_domain.o ice_constants.o
+ice_calendar.o:      ice_constants.o ice_fileunits.o
+ice_work.o:          ice_domain.o ice_constants.o ice_fileunits.o ice_calendar.o
+ice_grid.o:          ice_domain.o ice_constants.o ice_fileunits.o ice_work.o
+
+ice_state.o:         ice_domain.o ice_constants.o ice_grid.o ice_fileunits.o ice_work.o ice_calendar.o
+ice_albedo.o:        ice_state.o
+
+ice_flux.o:          ice_state.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+ice_flux_in.o:       ice_flux.o  ice_albedo.o ice_state.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+ice_scaling.o:       ice_flux.o  ice_albedo.o ice_state.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+
+ice_atmo.o:          ice_state.o
+ice_ocean.o:         ice_atmo.o ice_state.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+
+ice_therm_vertical.o: ice_atmo.o ice_state.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+
+ice_itd.o:           ice_state.o ice_flux.o ice_scaling.o ice_constants.o ice_domain.o ice_fileunits.o ice_grid.o
+ice_itd_linear.o:    ice_itd.o
+ice_mechred.o:       ice_itd.o ice_state.o ice_flux.o ice_scaling.o
+ice_therm_itd.o:     ice_itd_linear.o
+
+ice_init.o:          ice_state.o ice_flux_in.o ice_flux.o ice_ocean.o ice_atmo.o ice_mechred.o ice_therm_vertical.o
+ice_coupling.o:  mod_prec.o ice_init.o ice_state.o ice_ocean.o ice_atmo.o ice_flux_in.o
+
+# 2D ice driver and netCDF IO
+mod_ice2d.o:         ice_kinds_mod.o ice_state.o ice_mechred.o ice_itd.o ice_itd_linear.o ice_flux.o ice_scaling.o ice_domain.o ice_fileunits.o ice_constants.o ice_calendar.o ice_grid.o ice_work.o
+mod_ice.o:      mod_ice2d.o ice_flux_in.o ice_state.o ice_ocean.o ice_atmo.o ice_coupling.o ice_therm_itd.o
+mod_ncdio.o:    mod_wave_current_interaction.o mod_ice.o
 
 # SWCOMM3 module (defined in swmod1.F) is needed by several files.
-# Make sure swmod1.o (and therefore swcomm3.mod) is built first.
 swmod1.o: swmod1.F
 
 fvcom.o \

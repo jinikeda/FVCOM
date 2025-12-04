@@ -26,7 +26,7 @@ DTINCS  = -I$(TOPDIR)/libs/install/include
 # ===========================
 
 FLAG_1   = -DDOUBLE_PRECISION -DSINGLE_OUTPUT
-FLAG_2   = -DSPHERICAL
+FLAG_2   = 
 FLAG_3   = -DWET_DRY
 FLAG_4   = -DMULTIPROCESSOR
 # Disable METIS special partition
@@ -41,7 +41,7 @@ FLAG_44  = -DTVD
 FLAG_15  = -DMPDATA
 
 # ---- Disable all advanced modules ----
-FLAG_5  =
+FLAG_5  = -DICE
 FLAG_6  =
 FLAG_7  =
 FLAG_9  = 
@@ -65,16 +65,16 @@ FLAG_28 =
 FLAG_29 =
 FLAG_30 =
 FLAG_31 =
-FLAG_32 =
+FLAG_32 = -DWAVE_CURRENT_INTERACTION
 FLAG_33 =
-FLAG_34 =
+FLAG_34 = -DEXPLICIT
 FLAG_35 =
 FLAG_36 =
 FLAG_37 =
 FLAG_38 =
 FLAG_39 =
 FLAG_40 =
-FLAG_41 =
+FLAG_41 = -DPETSC_C
 FLAG_42 =
 FLAG_43 =
 FLAG_45 =
@@ -104,7 +104,7 @@ FC       = mpif90
 CC       = mpicc
 CXX      = mpicxx
 
-DEBFLGS  = -g -fbacktrace
+DEBFLGS  = -g -fbacktrace -fcheck=all -ffpe-trap=invalid,zero,overflow
 OPT      = -O0
 CFLAGS   = -O3
 
@@ -120,19 +120,33 @@ AR = ar rc
 # INCLUDE & LIBRARY PATHS
 # ===========================
 
-INCDIR = -I/usr/include
-LIBDIR = -L/usr/lib/x86_64-linux-gnu
+INCDIR     = -I/usr/include
+LIBDIR     = -L/usr/lib/x86_64-linux-gnu
+PETSC_DIR  = /home/jinikeda/petsc
+PETSC_ARCH = arch-linux-c-opt
 
 # ===========================
 # BUILD FLAGS
 # ===========================
 
-CPPARGS = $(CPPFLAGS) $(DEF_FLAGS) \
-  $(FLAG_1) $(FLAG_2) $(FLAG_3) $(FLAG_4) $(FLAG_8) $(FLAG_10) \
-  $(FLAG_15) $(FLAG_44) $(FLAG_USE_NETCDF4)
+# Load PETSc build settings (defines PETSC_FC_INCLUDES, PETSC_LIB, AR, etc.)
+include ${PETSC_DIR}/lib/petsc/conf/variables
 
-LIBS = $(LIBDIR) $(IOLIBS) $(DTLIBS)
+CPPARGS = $(CPPFLAGS) $(DEF_FLAGS) \
+  $(FLAG_1)  $(FLAG_3)  $(FLAG_4)  $(FLAG_5) \
+  $(FLAG_6)  $(FLAG_8)  $(FLAG_10) $(FLAG_14) \
+  $(FLAG_21) $(FLAG_28) \
+  $(FLAG_32) $(FLAG_33) $(FLAG_34) \
+  $(FLAG_41) $(FLAG_411) \
+  $(FLAG_USE_NETCDF4)
+
+LIBS = $(LIBDIR) $(PARLIB) $(PARTLIBS) $(IOLIBS) $(DTLIBS) \
+       $(PROJLIBS) $(PETSC_LIB)
 
 INCS = $(INCDIR) $(IOINCS) $(GOTMINCS) $(BIOINCS) \
        $(VISITINCPATH) $(PROJINCS) $(DTINCS) $(PARTINCS) \
        $(PETSC_FC_INCLUDES)
+
+# Restore the AR/RANLIB that FVCOM expects (PETSc changed them)
+AR     = ar rc
+RANLIB = ranlib
