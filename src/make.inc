@@ -41,7 +41,7 @@ FLAG_44  = -DTVD
 FLAG_15  = -DMPDATA
 
 # ---- Disable all advanced modules ----
-FLAG_5  = -DICE
+FLAG_5  =
 FLAG_6  =
 FLAG_7  =
 FLAG_9  = 
@@ -104,7 +104,7 @@ FC       = mpif90
 CC       = mpicc
 CXX      = mpicxx
 
-DEBFLGS  = -g -fbacktrace -fcheck=all -ffpe-trap=invalid,zero,overflow
+DEBFLGS  = -g -fbacktrace -fcheck=all
 OPT      = -O0
 CFLAGS   = -O3
 
