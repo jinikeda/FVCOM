@@ -1483,7 +1483,8 @@
    REAL :: DTMIN,HDT
    INTEGER :: IDT,ISMAX,ISP1
    LOGICAL :: SHAVE
-   REAL :: DAM(MDC,MSC)   
+!   REAL :: DAM(MDC,MSC)
+   REAL :: DAM(MDC,MSC+1)   ! modify for debugging 20251204.  
 !
    LOGICAL  INSIDE                                                     
 !
@@ -1597,6 +1598,9 @@
      XP = 0.15
      TPI2 = 2.0*PI_W
      FACP   = XP / PI_W * 0.62E-3 * TPI2**4 / GRAV_W**2
+
+     DAM(:,:) = 0.0    ! make sure the MSC+1 column is clean 20251204 debugging
+
      DO ISC = 1,MSC
        DO IDC = 1,MDC
          DAM(IDC,ISC) = FACP/(SPCSIG(ISC)*KWAVE(ISC,1)**3)
@@ -1702,7 +1706,8 @@
          ISMAX = IS
        END IF
      END DO
-     ISMAX = MAX ( ISMAX , ISP1 )
+!     ISMAX = MAX ( ISMAX , ISP1 )  ! debbuging 20251204
+     ISMAX = MIN(MSC, MAX(ISMAX, ISP1))
 
 !print*,'after source 1'
      DO ISC = 1,ISMAX 

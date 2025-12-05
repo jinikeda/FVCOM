@@ -37,17 +37,17 @@ MODULE MOD_PETSc
 # if defined (SEMI_IMPLICIT) || defined (NH) || (defined (WAVE_CURRENT_INTERACTION) && !defined (EXPLICIT))
   IMPLICIT NONE
 
-#include "include/finclude/petsc.h"
-#include "include/finclude/petscvec.h"
-#include "include/finclude/petscda.h"
-#include "include/finclude/petscmat.h"
-#include "include/finclude/petscksp.h"
-#include "include/finclude/petscpc.h"
-#include "include/finclude/petscis.h"
-#include "include/finclude/petscis.h90"
-#include "include/finclude/petscao.h"
-#include "include/finclude/petscvec.h90"
-#include "include/finclude/petscviewer.h"
+#include "petsc/finclude/petsc.h"
+#include "petsc/finclude/petscvec.h"
+#include "petsc/finclude/petscda.h"
+#include "petsc/finclude/petscmat.h"
+#include "petsc/finclude/petscksp.h"
+#include "petsc/finclude/petscpc.h"
+#include "petsc/finclude/petscis.h"
+#include "petsc/finclude/petscis.h90"
+#include "petsc/finclude/petscao.h"
+#include "petsc/finclude/petscvec.h90"
+#include "petsc/finclude/petscviewer.h"
 
 # if defined (SEMI_IMPLICIT) || (NH)
   REAL*8, POINTER          :: XVALS_EL(:)

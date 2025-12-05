@@ -54,7 +54,7 @@ MODULE MOD_REPORT
     !==============================================================================|
     USE ALL_VARS
     USE MOD_WD
-!   USE MOD_ICE
+    USE MOD_ICE
 # if defined (WAVE_CURRENT_INTERACTION)
     USE VARS_WAVE, only : HSC1
 #  endif
@@ -166,10 +166,19 @@ MODULE MOD_REPORT
 
 # if defined (ICE)
 
-    SBUF(18) = SUM(DBLE(AICE1(1:N)))
-    SBUF(19) = SUM(DBLE(VICE1(1:N)))
-    SBUF(20) = SUM(DBLE(UICE2(1:N)))
-    SBUF(21) = SUM(DBLE(VICE2(1:N)))
+! razy modfiication of ice issue 20251204 need check when ice module are needed also max and min command later 
+  
+    IF (ALLOCATED(UICE2) .AND. ALLOCATED(AICE1) .AND. ALLOCATED(VICE1) .AND. ALLOCATED(VICE2)) THEN
+       SBUF(18) = SUM(DBLE(AICE1))
+       SBUF(19) = SUM(DBLE(VICE1))
+       SBUF(20) = SUM(DBLE(UICE2))
+       SBUF(21) = SUM(DBLE(VICE2))
+    ELSE
+       SBUF(18) = 0.0D0
+       SBUF(19) = 0.0D0
+       SBUF(20) = 0.0D0
+       SBUF(21) = 0.0D0
+    END IF
 
 # endif
 # if defined (WAVE_CURRENT_INTERACTION)
@@ -207,10 +216,19 @@ MODULE MOD_REPORT
 
 # if defined (ICE)
 
-    SBUF(18) = MAXVAL(AICE1(1:N))
-    SBUF(19) = MAXVAL(VICE1(1:N))
-    SBUF(20) = MAXVAL(UICE2(1:N))
-    SBUF(21) = MAXVAL(VICE2(1:N))
+! Safe ICE max diagnostics
+
+    IF (ALLOCATED(UICE2) .AND. ALLOCATED(AICE1) .AND. ALLOCATED(VICE1) .AND. ALLOCATED(VICE2)) THEN
+       SBUF(18) = MAXVAL(AICE1)
+       SBUF(19) = MAXVAL(VICE1)
+       SBUF(20) = MAXVAL(UICE2)
+       SBUF(21) = MAXVAL(VICE2)
+    ELSE
+       SBUF(18) = 0.0D0
+       SBUF(19) = 0.0D0
+       SBUF(20) = 0.0D0
+       SBUF(21) = 0.0D0
+    END IF
 
 # endif
 # if defined (WAVE_CURRENT_INTERACTION)
@@ -249,10 +267,19 @@ MODULE MOD_REPORT
 
 # if defined (ICE)
 
-    SBUF(18) = MINVAL(AICE1(1:N))
-    SBUF(19) = MINVAL(VICE1(1:N))
-    SBUF(20) = MINVAL(UICE2(1:N))
-    SBUF(21) = MINVAL(VICE2(1:N))
+! Safe ICE min diagnostics
+
+    IF (ALLOCATED(UICE2) .AND. ALLOCATED(AICE1) .AND. ALLOCATED(VICE1) .AND. ALLOCATED(VICE2)) THEN
+       SBUF(18) = MINVAL(AICE1)
+       SBUF(19) = MINVAL(VICE1)
+       SBUF(20) = MINVAL(UICE2)
+       SBUF(21) = MINVAL(VICE2)
+    ELSE
+       SBUF(18) = 0.0D0
+       SBUF(19) = 0.0D0
+       SBUF(20) = 0.0D0
+       SBUF(21) = 0.0D0
+    END IF
 
 # endif
 # if defined (WAVE_CURRENT_INTERACTION)
