@@ -11,7 +11,7 @@
 !!
 !!=====================================================================
 !!=====================================================================
-
+# if defined (ICE)
 !=======================================================================
 !
 !BOP
@@ -57,7 +57,9 @@
 !
          use ice_init
          use ice_flux_in
-
+         
+!  These come from FVCOM’s global state module ALL_VARS
+      use all_vars, only : T_air, QA_AIR, DSW_AIR, QPREC, CLOUD
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
      use all_vars
@@ -615,11 +617,11 @@
 
       real (kind=dbl_kind) ::  &
          TsfK    & ! surface temperature (K)
-      ,  fsh     & ! sensible heat flux  (W/m^2)
-      ,  flh     & ! latent heat flux    (W/m^2)
+      ,  fsh_loc     & ! sensible heat flux  (W/m^2)
+      ,  flh_loc     & ! latent heat flux    (W/m^2)
       ,  swabs   & ! surface absorbed shortwave heat flux (W/m^2)
-      ,  flwup   & ! long-wave upward heat flux  (W/m^2)
-      ,  qdp     & ! deep ocean heat flux
+      ,  flwup_loc   & ! long-wave upward heat flux  (W/m^2)
+      ,  qdp_loc     & ! deep ocean heat flux
       ,  ft        ! fraction reduction of positive qdp
 
 !!=================================================================
@@ -767,7 +769,7 @@
 !       if (aice(i,j) > puny) then
 
          ! specify deep ocean heat flux as constant for now
-!         qdp = -c2i              ! negative upward
+!         qdp_loc = -c2i              ! negative upward
 !
 !         ! ocean surface temperature in Kelvin
 !         TsfK = sst(i,j) + Tffresh
@@ -777,19 +779,19 @@
 !             * (swvdr(i,j) + swvdf(i,j) + swidr(i,j) + swidf(i,j))
 !
 !         ! longwave radiative flux
-!         flwup  = -emissivity*stefan_boltzmann * TsfK**4
+!         flwup_loc  = -emissivity*stefan_boltzmann * TsfK**4
 !
 !         ! downward latent and sensible heat fluxes
-!         flh = lhcoef(i,j) * delq(i,j)
-!         fsh = shcoef(i,j) * delt(i,j)
+!         flh_loc = lhcoef(i,j) * delq(i,j)
+!         fsh_loc = shcoef(i,j) * delt(i,j)
 !
 !         ! first, compute sst change due to exchange with atm/ice above
 !         sst(i,j) = sst(i,j) +                         &
-!              (fsh + flh + flwup + flw(i,j) + swabs)  &
+!              (fsh_loc + flh_loc + flwup_loc + flw(i,j) + swabs)  &
 !              * (c1i-aice(i,j)) * dtice / cphm
 !
 !         ! computed T change due to exchange with deep layers:
-!         sst(i,j) = sst(i,j) - qdp*dtice/cphm
+!         sst(i,j) = sst(i,j) - qdp_loc*dtice/cphm
 !
 !         ! compute potential to freeze or melt ice
 !         frzmlt(i,j) = (Tf(i,j)-sst(i,j))*cphm/dtice
@@ -807,7 +809,7 @@
        !!!==============================================================
        !!!==============================================================
            !!  heat for the ocean  model
-!           WTSURF(J) = (fsh + flh + flwup + flw(i,j))*(c1i-aice(i,j))
+!           WTSURF(J) = (fsh_loc + flh_loc + flwup_loc + flw(i,j))*(c1i-aice(i,j))
 !           SWRAD(J)  = swabs*(c1i-aice(i,j))
 
 
@@ -925,3 +927,5 @@
       end module ice_coupling
 
 !=======================================================================
+
+# endif

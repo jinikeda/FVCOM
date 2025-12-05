@@ -814,7 +814,8 @@
 !                 +DRHOY(I,K)+COR(I)*U(I,K)*DT1(I)*ART(I)&
 !                 +U(I,K)*U(I,K)/REARTH*TAN(YC(I)*DEG2RAD)*DT1(I)*ART(I)&
 !                 +0.5_SP*V(I,K)*(W(I,K+1)+W(I,K))/REARTH*DT1(I)*ART(I)
-#      if !defined (WAVE_CURRENT_INTERACTION) && !defined (VORTEX_FORCE)
+! This sentence is logical mistake modify from && to || 20251204
+#      if !defined (WAVE_CURRENT_INTERACTION) || !defined (VORTEX_FORCE)
        XFLUX(I,K)=XFLUX(I,K)+XFLUXV*ART(I)&
                  +DRHOX(I,K)-COR(I)*V(I,K)*DT1(I)*DZ1(I,K)*ART(I)&
                  -U(I,K)*V(I,K)/REARTH*TAN(YC(I)*DEG2RAD)*DT1(I)*DZ1(I,K)*ART(I)&

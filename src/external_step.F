@@ -43,8 +43,10 @@ SUBROUTINE EXTERNAL_STEP
   USE MOD_PAR
 # endif
 
-!  USE MOD_ICE
-!  USE MOD_ICE2D
+#  if defined (ICE)
+  USE MOD_ICE
+  USE MOD_ICE2D
+#  endif
 
 # if defined (PLBC)
   USE MOD_PERIODIC_LBC

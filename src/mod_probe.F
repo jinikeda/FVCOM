@@ -819,8 +819,8 @@ SUBROUTINE ALLOC_PROBE(PROBE,N)
       USE MOD_PREC
       USE ALL_VARS
 # if defined (ICE)
-!      USE MOD_ICE
-!      USE MOD_ICE2D
+      USE MOD_ICE
+      USE MOD_ICE2D
 # endif
       IMPLICIT NONE
       TYPE(PROBE_OBJ) :: PROBE
